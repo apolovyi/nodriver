@@ -264,7 +264,7 @@ class Connection:
         target = target or self.target
 
         if not target:
-            # is possibly browser target
+            # is browser target
 
             self.handlers[cdp.target.AttachedToTarget] = [
                 lambda event: setattr(self, "target", event.target_info)
@@ -321,7 +321,7 @@ class Connection:
             _attach=True,
         )
         self.session_id = None
-        self.target = None
+
         self.handlers.clear()
         self._targets.clear()
 
@@ -547,6 +547,18 @@ class Connection:
             f"\turl: {self.target.url if type(self.target) is cdp.target.TargetInfo else ''}\n"
             f"\tattached: {self.attached}>\n"
         )
+
+    #
+    # def __hash__(self):
+    #     return hash(frozenset([self.target.target_id, self.session_id]))
+
+    # def __eq__(self, other: Union[Connection]):
+    #     try:
+    #         assert self.session_id and other.session_id and other.session_id == self.session_id
+    #         assert self.target and other.target and self.target.target_id == other.target.target_id
+    #         return True
+    #     except (Exception,):
+    #         return NotImplemented
 
     def __repr__(self):
         return self.__str__()
